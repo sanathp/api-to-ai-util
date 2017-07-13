@@ -262,6 +262,30 @@ func UpdateStringParamsUserIdAndStringItemId(tableName string, userId string, it
 	return params
 }
 
+func UpdateStringParamsUserIdAndItemId(tableName string, userId string, itemId int64, columnName string, columnValue string) *dynamodb.UpdateItemInput {
+	updateKey := ":updateKey"
+	params := &dynamodb.UpdateItemInput{
+		Key: map[string]*dynamodb.AttributeValue{
+			UserId: {
+				S: aws.String(userId),
+			},
+			ItemId: {
+				N: aws.String(strconv.FormatInt(itemId, 10)),
+			},
+		},
+		TableName:    aws.String(tableName),
+		ReturnValues: aws.String("ALL_NEW"),
+		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
+			updateKey: {
+				S: aws.String(columnValue),
+			},
+		},
+		UpdateExpression:    aws.String("SET " + columnName + " = " + updateKey),
+		ConditionExpression: aws.String(ItemExistsConditionExpression),
+	}
+	return params
+}
+
 func UpdateBooleanParamsUserIdAndStringItemId(tableName string, userId string, itemId string, columnName string, columnValue bool) *dynamodb.UpdateItemInput {
 	updateKey := ":updateKey"
 	params := &dynamodb.UpdateItemInput{
