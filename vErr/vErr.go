@@ -105,6 +105,11 @@ func InvalidParameterError(message string) Error {
 	return New(InvalidParameterType, message)
 }
 
+func RequiredParamMissingError(paramName string) Error {
+	message := paramName + " should not be empty"
+	return New(InvalidInputDataType, message)
+}
+
 func InvalidInputDataError(message string) Error {
 	return New(InvalidInputDataType, message)
 }
