@@ -32,15 +32,14 @@ func (dynamo *Dynamo) PutItemParams(values map[string]*dynamodb.AttributeValue) 
 	return params
 }
 
-//This doesnot have ConditionExpression , so this update the item if it already exists
-func (dynamo *Dynamo) PutOrUpdateItemParams(values map[string]*dynamodb.AttributeValue) *dynamodb.PutItemInput {
+func (dynamo *Dynamo) UpdateItemParams(values map[string]*dynamodb.AttributeValue) *dynamodb.PutItemInput {
 	return &dynamodb.PutItemInput{
-		Item:      values,
-		TableName: aws.String(dynamo.TableName), // Required
+		Item:                values,
+		TableName:           aws.String(dynamo.TableName), // Required
+		ConditionExpression: aws.String("attribute_exists(" + dynamo.RangeKeyName + ")"),
 	}
 }
 
-//TODO: test whether this works
 func (dynamo *Dynamo) GetItemParams(key string, rangeKey interface{}) *dynamodb.GetItemInput {
 	return &dynamodb.GetItemInput{
 		Key:            dynamo.GetKeyAttribute(key, rangeKey),
