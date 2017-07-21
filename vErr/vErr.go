@@ -49,10 +49,7 @@ var (
 	InvalidTimestampVErr = New(InvalidTimestampType, "")
 	InvalidItemIdVErr    = New(InvalidItemIdType, "")
 
-	ErrInvalidBearerToken = New(InvalidTokenType, "Invalid Bearer Token")
-	ErrNoBearerToken      = New(InvalidTokenType, "No Bearer Token Available")
-	ErrInvalidJwtToken    = New(InvalidTokenType, "Invalid Jwt Token")
-	TokenInvalidatedErr   = New(TokenInvalidatedErrorType, "Token invalidate by user")
+	ErrInvalidToken = New(InvalidTokenType, "Invalid Token")
 )
 
 type (

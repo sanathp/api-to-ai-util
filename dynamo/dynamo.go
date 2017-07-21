@@ -23,13 +23,18 @@ type Dynamo struct {
 }
 
 func (dynamo *Dynamo) PutItemParams(values map[string]*dynamodb.AttributeValue) *dynamodb.PutItemInput {
-	params := &dynamodb.PutItemInput{
-		Item:                values,
-		TableName:           aws.String(dynamo.TableName), // Required
-		ConditionExpression: aws.String("attribute_not_exists(" + dynamo.RangeKeyName + ")"),
+	if len(dynamo.RangeKeyName) == 0 {
+		return &dynamodb.PutItemInput{
+			Item:      values,
+			TableName: aws.String(dynamo.TableName),
+		}
+	} else {
+		return &dynamodb.PutItemInput{
+			Item:                values,
+			TableName:           aws.String(dynamo.TableName), // Required
+			ConditionExpression: aws.String("attribute_not_exists(" + dynamo.RangeKeyName + ")"),
+		}
 	}
-
-	return params
 }
 
 func (dynamo *Dynamo) UpdateItemParams(values map[string]*dynamodb.AttributeValue) *dynamodb.PutItemInput {
