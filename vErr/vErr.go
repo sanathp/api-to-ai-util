@@ -30,6 +30,8 @@ const (
 	UrlInfoErrorType          = "url_info_error"
 	VcryptErrorType           = "vcrypt_error"
 	TokenInvalidatedErrorType = "invalidated_token_received"
+	HttpRequestCreateFailed   = "failed_to_create_http_request"
+	HttpRequestFailed         = "http_request_failed"
 )
 
 var (

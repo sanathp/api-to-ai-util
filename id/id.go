@@ -1,6 +1,7 @@
 package id
 
 import (
+	"fmt"
 	"math/rand"
 	"strconv"
 	"time"
@@ -12,6 +13,33 @@ const (
 	IdLength        = 15
 	TimestampLength = 13
 )
+
+var stringMap = map[string]string{
+	"0": "a",
+	"1": "b",
+	"2": "c",
+	"3": "d",
+	"4": "e",
+	"5": "f",
+	"6": "g",
+	"7": "h",
+	"8": "i",
+	"9": "j",
+}
+
+func GetStringId() string {
+	stringId := ""
+	timestamp := strconv.Itoa(int(time.Now().UnixNano()))
+	for _, elem := range timestamp {
+		stringId = stringId + stringMap[string(elem)]
+	}
+	fmt.Println(stringId)
+	//Worst case, but this should not happen
+	if len(stringId) == 0 {
+		stringId = GetNewUUID()
+	}
+	return stringId
+}
 
 func GetNewUUID() string {
 	return uuid.NewV4().String()
@@ -64,16 +92,4 @@ func GetNewItemIdAndTimestamp() (int, int) {
 	timestamp := ctime / 1000000
 	newId := timestamp*100 + rand.Intn(100)
 	return newId, timestamp
-}
-
-func GenerateUserAppKey(userId string) (string, int) {
-	return userId + "|" + GetNewUUID(), GetTimestamp()
-}
-
-func GetUserAppKeyAndTimestamp(userId string, appId string) (string, int) {
-	return userId + "|" + appId, GetTimestamp()
-}
-
-func GetUserAppKey(userId string, appId string) string {
-	return userId + "|" + appId
 }

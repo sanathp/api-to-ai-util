@@ -45,6 +45,13 @@ func (dynamo *Dynamo) UpdateItemParams(values map[string]*dynamodb.AttributeValu
 	}
 }
 
+func (dynamo *Dynamo) UpdateItemParamsWithOutCondition(values map[string]*dynamodb.AttributeValue) *dynamodb.PutItemInput {
+	return &dynamodb.PutItemInput{
+		Item:      values,
+		TableName: aws.String(dynamo.TableName), // Required\
+	}
+}
+
 func (dynamo *Dynamo) GetItemParams(key string, rangeKey interface{}) *dynamodb.GetItemInput {
 	return &dynamodb.GetItemInput{
 		Key:            dynamo.GetKeyAttribute(key, rangeKey),
@@ -111,7 +118,7 @@ func (dynamo *Dynamo) QueryParams(key string) *dynamodb.QueryInput {
 	return params
 }
 
-func (dynamo *Dynamo) QueryParamsWithIndexName(indexName string, key string) *dynamodb.QueryInput {
+func (dynamo *Dynamo) QueryParamsWithIndexName(indexName string, keyName string, keyValue string) *dynamodb.QueryInput {
 
 	params := &dynamodb.QueryInput{
 		TableName:        aws.String(dynamo.TableName), // Required
@@ -119,11 +126,11 @@ func (dynamo *Dynamo) QueryParamsWithIndexName(indexName string, key string) *dy
 		Limit:            aws.Int64(dynamo.Limit),
 		ScanIndexForward: aws.Bool(false),
 		KeyConditions: map[string]*dynamodb.Condition{
-			dynamo.KeyName: { // Required
+			keyName: { // Required
 				ComparisonOperator: aws.String(dynamodb.ComparisonOperatorEq), // Required
 				AttributeValueList: []*dynamodb.AttributeValue{
 					{
-						S: aws.String(key),
+						S: aws.String(keyValue),
 					},
 				},
 			},

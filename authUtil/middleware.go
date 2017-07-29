@@ -31,10 +31,12 @@ func UserIdAuthMiddleware(userLimiter *config.Limiter) gin.HandlerFunc {
 			logger.AuthInternalServerError("UserIdAuthMiddleware", authErr)
 			c.JSON(http.StatusInternalServerError, gin.H{})
 			c.Abort()
+			return
 		} else {
 			logger.Error("UserIdAuthMiddleware", authErr)
 			c.JSON(http.StatusUnauthorized, gin.H{})
 			c.Abort()
+			return
 		}
 	}
 }
@@ -60,12 +62,14 @@ func UserIdAuthCookieMiddleware(userLimiter *config.Limiter) gin.HandlerFunc {
 			logger.AuthInternalServerError("UserIdAuthMiddleware", authErr)
 			c.JSON(http.StatusInternalServerError, gin.H{})
 			c.Abort()
+			return
 		} else {
 			logger.Error("UserIdAuthMiddleware", authErr)
 
 			//FTODO: use common constnt here for login path
 			c.Redirect(http.StatusTemporaryRedirect, "/login")
 			c.Abort()
+			return
 		}
 	}
 }
