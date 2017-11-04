@@ -41,7 +41,7 @@ func UserIdAuthMiddleware(userLimiter *config.Limiter) gin.HandlerFunc {
 	}
 }
 
-func UserIdAuthCookieMiddleware(userLimiter *config.Limiter) gin.HandlerFunc {
+func UserIdAuthCookieMiddleware(userLimiter *config.Limiter, redirect bool) gin.HandlerFunc {
 
 	return func(c *gin.Context) {
 		userIdObj, authErr := getUserIdFromCookie(c)
@@ -67,8 +67,13 @@ func UserIdAuthCookieMiddleware(userLimiter *config.Limiter) gin.HandlerFunc {
 			logger.Error("UserIdAuthMiddleware", authErr)
 
 			//FTODO: use common constnt here for login path
-			c.Redirect(http.StatusTemporaryRedirect, "/login")
-			c.Abort()
+			if redirect {
+				//let the web handler handle this
+				c.Next()
+			} else {
+				c.JSON(http.StatusUnauthorized, gin.H{})
+				c.Abort()
+			}
 			return
 		}
 	}

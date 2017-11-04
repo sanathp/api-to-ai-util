@@ -71,6 +71,10 @@ func Debug(args ...interface{}) {
 	logrus.Debug(args)
 }
 
+func Info(args ...interface{}) {
+	logrus.Info(args)
+}
+
 func Error(args ...interface{}) {
 	logrus.Error(args)
 }

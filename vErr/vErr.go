@@ -1,5 +1,9 @@
 package vErr
 
+import (
+	"gopkg.in/go-playground/validator.v9"
+)
+
 const (
 	InvalidParameterType      = "invalid_parameter"
 	FailedStatusType          = "failed"
@@ -30,8 +34,9 @@ const (
 	UrlInfoErrorType          = "url_info_error"
 	VcryptErrorType           = "vcrypt_error"
 	TokenInvalidatedErrorType = "invalidated_token_received"
-	HttpRequestCreateFailed   = "failed_to_create_http_request"
+	HttpRequestCreationFailed = "failed_to_create_http_request"
 	HttpRequestFailed         = "http_request_failed"
+	HttpResponseNotOk         = "http_response_not_200"
 )
 
 var (
@@ -115,4 +120,19 @@ func InvalidInputDataError(message string) Error {
 
 func SendError(err error) Error {
 	return New(err.Error(), "")
+}
+
+func ValidatorErr(err error) Error {
+	return New(InvalidInputDataType, GetValidatorMsg(err))
+}
+
+func GetValidatorMsg(err error) string {
+	message := ""
+	for key, err := range err.(validator.ValidationErrors) {
+		if key == 0 {
+			message = "Invalid input for field '" + err.Field() + "', tag details = " + err.Tag() + ":" + err.Param()
+			break
+		}
+	}
+	return message
 }
