@@ -69,7 +69,7 @@ func (dynamo *Dynamo) DeleteParams(key string, rangeKey interface{}) *dynamodb.D
 }
 
 func (dynamo *Dynamo) GetKeyAttribute(key string, rangeKey interface{}) map[string]*dynamodb.AttributeValue {
-	//TODO: inproper interface conversion will throw nil exceptions avoid them
+	//FTODO: inproper interface conversion will throw nil exceptions avoid them
 	if dynamo.RangeKeyType == NumberKeyType {
 		return map[string]*dynamodb.AttributeValue{
 			dynamo.KeyName: {
