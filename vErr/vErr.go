@@ -31,6 +31,7 @@ const (
 	UpdateFailedType          = "update_failed"
 	GCMErrorType              = "google_cloud_messaging_error"
 	GoogleOAuthType           = "google_oauth_error"
+	LWAOAuthType              = "lwa_oauth_error"
 	UrlInfoErrorType          = "url_info_error"
 	VcryptErrorType           = "vcrypt_error"
 	TokenInvalidatedErrorType = "invalidated_token_received"
