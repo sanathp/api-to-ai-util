@@ -56,13 +56,16 @@ func CustomLogger() gin.HandlerFunc {
 		clientIP := c.ClientIP()
 		method := c.Request.Method
 
-		logrus.WithFields(logrus.Fields{
-			"request_type": method,
-			"client_ip":    clientIP,
-			"path":         path,
-			"latency":      latency,
-			"status":       status,
-		}).Info("request")
+		//log every request except ping
+		if path != "/ping" {
+			logrus.WithFields(logrus.Fields{
+				"request_type": method,
+				"client_ip":    clientIP,
+				"path":         path,
+				"latency":      latency,
+				"status":       status,
+			}).Info("request")
+		}
 
 	}
 }

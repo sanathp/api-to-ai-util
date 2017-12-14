@@ -1,6 +1,7 @@
 package authUtil
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/didip/tollbooth"
@@ -59,12 +60,12 @@ func UserIdAuthCookieMiddleware(userLimiter *config.Limiter, redirect bool) gin.
 			return
 
 		} else if authErr.Type() == vErr.InternalServerErrorType {
-			logger.AuthInternalServerError("UserIdAuthMiddleware", authErr)
+			logger.AuthInternalServerError("UserIdAuthCookieMiddleware", authErr)
 			c.JSON(http.StatusInternalServerError, gin.H{})
 			c.Abort()
 			return
 		} else {
-			logger.Error("UserIdAuthMiddleware", authErr)
+			logger.Error("UserIdAuthCookieMiddleware", authErr)
 
 			//FTODO: use common constnt here for login path
 			if redirect {
@@ -95,6 +96,7 @@ func getUserIdFromCookie(c *gin.Context) (UserId, vErr.Error) {
 	cookie, cookieErr := c.Request.Cookie(constants.AuthTokenCookieKey)
 
 	if cookieErr != nil {
+		fmt.Println(c.Request.URL, c.Request.Method, c.Request.Cookies)
 		return UserId{}, vErr.SendError(cookieErr)
 	}
 
