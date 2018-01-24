@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"fmt"
 	"os"
 	"time"
 
@@ -71,7 +72,9 @@ func CustomLogger() gin.HandlerFunc {
 }
 
 func Debug(args ...interface{}) {
-	logrus.Debug(args)
+	if logrus.GetLevel() <= logrus.DebugLevel {
+		fmt.Println(args)
+	}
 }
 
 func Info(args ...interface{}) {

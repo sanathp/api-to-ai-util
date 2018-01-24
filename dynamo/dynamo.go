@@ -37,6 +37,13 @@ func (dynamo *Dynamo) PutItemParams(values map[string]*dynamodb.AttributeValue) 
 	}
 }
 
+func (dynamo *Dynamo) PutOrReplaceItemParams(values map[string]*dynamodb.AttributeValue) *dynamodb.PutItemInput {
+	return &dynamodb.PutItemInput{
+		Item:      values,
+		TableName: aws.String(dynamo.TableName),
+	}
+}
+
 func (dynamo *Dynamo) UpdateItemParams(values map[string]*dynamodb.AttributeValue) *dynamodb.PutItemInput {
 	return &dynamodb.PutItemInput{
 		Item:                values,
@@ -198,5 +205,22 @@ func (dynamo *Dynamo) UpdateParams(key string, rangeKey interface{}, columnName 
 		},
 		UpdateExpression:    aws.String("SET " + columnName + " = " + updateKey),
 		ConditionExpression: aws.String("attribute_exists(" + dynamo.RangeKeyName + ")"),
+	}
+}
+
+func (dynamo *Dynamo) UpdateParamsWithoutRangeKey(key string, columnName string, columnValue *dynamodb.AttributeValue) *dynamodb.UpdateItemInput {
+	updateKey := ":updateKey"
+	return &dynamodb.UpdateItemInput{
+		Key: map[string]*dynamodb.AttributeValue{
+			dynamo.KeyName: {
+				S: aws.String(key),
+			},
+		},
+		TableName:    aws.String(dynamo.TableName),
+		ReturnValues: aws.String("ALL_NEW"),
+		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
+			updateKey: columnValue,
+		},
+		UpdateExpression: aws.String("SET " + columnName + " = " + updateKey),
 	}
 }
