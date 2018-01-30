@@ -146,6 +146,27 @@ func (dynamo *Dynamo) QueryParamsWithIndexName(indexName string, keyName string,
 	return params
 }
 
+func (dynamo *Dynamo) QueryParamsWithIndexNameNumber(indexName string, keyName string, keyValue int) *dynamodb.QueryInput {
+
+	params := &dynamodb.QueryInput{
+		TableName:        aws.String(dynamo.TableName), // Required
+		IndexName:        aws.String(indexName),
+		Limit:            aws.Int64(dynamo.Limit),
+		ScanIndexForward: aws.Bool(false),
+		KeyConditions: map[string]*dynamodb.Condition{
+			keyName: { // Required
+				ComparisonOperator: aws.String(dynamodb.ComparisonOperatorEq), // Required
+				AttributeValueList: []*dynamodb.AttributeValue{
+					{
+						N: aws.String(strconv.Itoa(keyValue)),
+					},
+				},
+			},
+		},
+	}
+	return params
+}
+
 func (dynamo *Dynamo) UpdateStringParams(key string, rangeKey interface{}, columnName string, columnValue string) *dynamodb.UpdateItemInput {
 	updateKey := ":updateKey"
 	return &dynamodb.UpdateItemInput{
