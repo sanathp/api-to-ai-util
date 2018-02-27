@@ -245,3 +245,10 @@ func (dynamo *Dynamo) UpdateParamsWithoutRangeKey(key string, columnName string,
 		UpdateExpression: aws.String("SET " + columnName + " = " + updateKey),
 	}
 }
+
+func (dynamo *Dynamo) ScanParams() *dynamodb.ScanInput {
+	return &dynamodb.ScanInput{
+		TableName: aws.String(dynamo.TableName),
+	}
+
+}
