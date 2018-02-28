@@ -65,7 +65,7 @@ func UserIdAuthCookieMiddleware(userLimiter *config.Limiter, redirect bool) gin.
 			c.Abort()
 			return
 		} else {
-			logger.Error("UserIdAuthCookieMiddleware", authErr)
+			logger.Warn("UserIdAuthCookieMiddleware", authErr)
 
 			//FTODO: use common constnt here for login path
 			if redirect {
