@@ -57,6 +57,12 @@ func GetTimestamp() int {
 	return ctime / 1000000
 }
 
+func GetTimestampInSecs() int {
+	ctime := int(time.Now().UnixNano())
+	//Converting nano timestamp to  seconds
+	return ctime / 1000000000
+}
+
 func IsValidItemId(id string) (int, bool) {
 	if len(id) != IdLength {
 		return 0, false
