@@ -38,6 +38,10 @@ const (
 	HttpRequestCreationFailed = "failed_to_create_http_request"
 	HttpRequestFailed         = "http_request_failed"
 	HttpResponseNotOk         = "http_response_not_200"
+
+	//Token refresh error types
+	RefreshTokenNotAvailable = "refresh_token_not_avaiable"
+	TokenRefreshFailed       = "token_refresh_failed"
 )
 
 var (
