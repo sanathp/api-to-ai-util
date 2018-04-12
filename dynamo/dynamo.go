@@ -195,7 +195,7 @@ func (dynamo *Dynamo) UpdateNumberParams(key string, rangeKey interface{}, colum
 			},
 		},
 		UpdateExpression:    aws.String("SET " + columnName + " = " + updateKey),
-		ConditionExpression: aws.String("attribute_exists(" + dynamo.RangeKeyName + ")"),
+		ConditionExpression: aws.String("attribute_exists(" + dynamo.KeyName + ")"),
 	}
 }
 
