@@ -9,6 +9,7 @@ import (
 	"github.com/Sirupsen/logrus/formatters/logstash"
 	"github.com/gin-gonic/gin"
 	"github.com/sanathp/api-to-ai-util/vErr"
+	"github.com/sebest/logrusly"
 )
 
 const (
@@ -17,6 +18,12 @@ const (
 )
 
 func Initialize(mode string, appName string) {
+
+	if appName == "magicbricks-sms" {
+		fmt.Println("Adding loggly hook")
+		hook := logrusly.NewLogglyHook("2d1b5820-3584-4764-bc65-ec6234ebbbd2", "magicbricks-sms", logrus.DebugLevel, "http")
+		logrus.AddHook(hook)
+	}
 
 	if mode == DEVELOPMENT {
 		//in development mode
