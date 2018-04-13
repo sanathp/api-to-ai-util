@@ -5,10 +5,10 @@ import (
 	"os"
 	"time"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 	"github.com/sanathp/api-to-ai-util/vErr"
 	"github.com/sebest/logrusly"
+	"github.com/sirupsen/logrus"
 )
 
 const (
