@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/Sirupsen/logrus"
-	"github.com/Sirupsen/logrus/formatters/logstash"
 	"github.com/gin-gonic/gin"
 	"github.com/sanathp/api-to-ai-util/vErr"
 	"github.com/sebest/logrusly"
@@ -27,12 +26,12 @@ func Initialize(mode string, appName string) {
 
 	if mode == DEVELOPMENT {
 		//in development mode
-		logrus.SetFormatter(&logstash.LogstashFormatter{Type: appName})
+		logrus.SetFormatter(&logrus.JSONFormatter{})
 		logrus.SetOutput(os.Stderr)
 		logrus.SetLevel(logrus.DebugLevel)
 	} else if mode == PRODUCTION {
 		//in production mode
-		logrus.SetFormatter(&logstash.LogstashFormatter{Type: appName})
+		logrus.SetFormatter(&logrus.JSONFormatter{})
 		logrus.SetOutput(os.Stderr)
 		logrus.SetLevel(logrus.DebugLevel)
 		//FTODO: save production logs somewhere,but not required for now i guess
