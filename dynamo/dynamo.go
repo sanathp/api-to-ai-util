@@ -179,7 +179,7 @@ func (dynamo *Dynamo) UpdateStringParams(key string, rangeKey interface{}, colum
 			},
 		},
 		UpdateExpression:    aws.String("SET " + columnName + " = " + updateKey),
-		ConditionExpression: aws.String("attribute_exists(" + dynamo.RangeKeyName + ")"),
+		ConditionExpression: aws.String("attribute_exists(" + dynamo.KeyName + ")"),
 	}
 }
 
@@ -192,6 +192,22 @@ func (dynamo *Dynamo) UpdateNumberParams(key string, rangeKey interface{}, colum
 		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
 			updateKey: {
 				N: aws.String(strconv.Itoa(columnValue)),
+			},
+		},
+		UpdateExpression:    aws.String("SET " + columnName + " = " + updateKey),
+		ConditionExpression: aws.String("attribute_exists(" + dynamo.KeyName + ")"),
+	}
+}
+
+func (dynamo *Dynamo) UpdateBoolParams(key string, rangeKey interface{}, columnName string, columnValue bool) *dynamodb.UpdateItemInput {
+	updateKey := ":updateKey"
+	return &dynamodb.UpdateItemInput{
+		Key:          dynamo.GetKeyAttribute(key, rangeKey),
+		TableName:    aws.String(dynamo.TableName),
+		ReturnValues: aws.String("ALL_NEW"),
+		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
+			updateKey: {
+				BOOL: aws.Bool(columnValue),
 			},
 		},
 		UpdateExpression:    aws.String("SET " + columnName + " = " + updateKey),
