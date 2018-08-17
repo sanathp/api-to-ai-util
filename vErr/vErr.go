@@ -123,6 +123,10 @@ func InvalidInputDataError(message string) Error {
 	return New(InvalidInputDataType, message)
 }
 
+func InternalServerError(message string) Error {
+	return New(InternalServerErrorType, message)
+}
+
 func SendError(err error) Error {
 	return New(err.Error(), "")
 }
