@@ -135,6 +135,10 @@ func ValidatorErr(err error) Error {
 	return New(InvalidInputDataType, GetValidatorMsg(err))
 }
 
+func ValidatorErrWithType(errorType string, err error) Error {
+	return New(errorType, GetValidatorMsg(err))
+}
+
 func GetValidatorMsg(err error) string {
 	message := ""
 	for key, err := range err.(validator.ValidationErrors) {
