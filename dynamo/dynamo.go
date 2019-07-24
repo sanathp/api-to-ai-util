@@ -231,6 +231,21 @@ func (dynamo *Dynamo) IncrementColumnValue(key string, rangeKey interface{}, col
 	}
 }
 
+func (dynamo *Dynamo) IncrementColumnValueWithoutRangeKey(key string, columnName string) *dynamodb.UpdateItemInput {
+	updateKey := ":updateKey"
+	return &dynamodb.UpdateItemInput{
+		Key:          dynamo.GetKeyAttribute(key, nil),
+		TableName:    aws.String(dynamo.TableName),
+		ReturnValues: aws.String("ALL_NEW"),
+		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
+			updateKey: {
+				N: aws.String(strconv.Itoa(1)),
+			},
+		},
+		UpdateExpression: aws.String("ADD " + columnName + " " + updateKey),
+	}
+}
+
 func (dynamo *Dynamo) DecrementColumnValue(key string, rangeKey interface{}, columnName string) *dynamodb.UpdateItemInput {
 	updateKey := ":updateKey"
 	return &dynamodb.UpdateItemInput{
